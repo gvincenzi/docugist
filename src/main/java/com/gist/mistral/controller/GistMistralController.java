@@ -11,17 +11,16 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gist.mistral.service.MistralAIChatService;
 import com.gist.mistral.service.client.MistralAIClient;
 import com.gist.mistral.service.client.request.MistralAIOCRDocumentRequest;
-import com.gist.mistral.service.client.request.MistralAIOCRImageRequest;
 import com.gist.mistral.service.client.request.MistralAIOCRPageResponse;
 import com.gist.mistral.service.client.request.MistralAIOCRRequest;
 import com.gist.mistral.service.client.response.MistralAIOCRResponse;
@@ -37,8 +36,13 @@ public class GistMistralController {
 	@Autowired
 	private MistralAIClient mistralAIClient;
 	
-    @PostMapping(value = "/ocr/pdf/url")
-    public ResponseEntity<DocumentSummaryWithParagraph> ocrByPDF(@RequestParam String url, @RequestParam String lang) throws FileNotFoundException, IOException, InterruptedException {
+	@GetMapping(value = "/main")
+	public String main(Model model) {
+		return "main";
+	}
+	
+    @PostMapping(value = "/summarize/url")
+    public String summarizeURL(@RequestParam String url, @RequestParam String lang, @RequestParam(defaultValue = "false", required = false) Boolean withParagraph, Model model) throws FileNotFoundException, IOException, InterruptedException {
     	MistralAIOCRRequest request = new MistralAIOCRRequest();
     	MistralAIOCRDocumentRequest document = new MistralAIOCRDocumentRequest();
     	document.setDocument_url(url);
@@ -53,48 +57,18 @@ public class GistMistralController {
 			buffer.append(page.getMarkdown());
 		}
 		
-		InputStreamResource inputStream = new InputStreamResource(new FileInputStream(markdown));
-		DocumentSummaryWithParagraph documentSummary = (DocumentSummaryWithParagraph) mistralAIChatService.summary(inputStream, lang, Boolean.TRUE);
-    	return new ResponseEntity<DocumentSummaryWithParagraph>(documentSummary, HttpStatus.ACCEPTED);
-    }
-    
-    @PostMapping(value = "/ocr/image/url")
-    public ResponseEntity<MistralAIOCRResponse> ocrByImage(@RequestParam String url) throws FileNotFoundException, IOException, InterruptedException {
-    	MistralAIOCRRequest request = new MistralAIOCRRequest();
-    	MistralAIOCRImageRequest document = new MistralAIOCRImageRequest();
-    	document.setImage_url(url);
-		request.setDocument(document);
-		MistralAIOCRResponse mistralAIOCRResponse = mistralAIClient.ocr(request);
-    	
-		File markdown = new File("markdown_"+System.currentTimeMillis()+".md");
-		List<MistralAIOCRPageResponse> pages = mistralAIOCRResponse.getPages();
-		for (MistralAIOCRPageResponse page : pages) {
-			FileUtils.writeStringToFile(markdown, page.getMarkdown(), Charset.forName("UTF-8"), Boolean.TRUE);
-		}
-		
-    	return new ResponseEntity<MistralAIOCRResponse>(mistralAIOCRResponse, HttpStatus.ACCEPTED);
-    }
-    
-    @PostMapping(value = "/summarize")
-    public String summarize(@RequestParam String url, @RequestParam String lang, @RequestParam(defaultValue = "false", required = false) Boolean withParagraph, Model model) throws FileNotFoundException, IOException, InterruptedException {
-    	MistralAIOCRRequest request = new MistralAIOCRRequest();
-    	MistralAIOCRDocumentRequest document = new MistralAIOCRDocumentRequest();
-    	document.setDocument_url(url);
-		request.setDocument(document);
-		MistralAIOCRResponse mistralAIOCRResponse = mistralAIClient.ocr(request);
-		
-		File markdown = new File("out/markdown_"+System.currentTimeMillis()+".md");
-		List<MistralAIOCRPageResponse> pages = mistralAIOCRResponse.getPages();
-		StringBuffer buffer = new StringBuffer();
-		for (MistralAIOCRPageResponse page : pages) {
-			FileUtils.writeStringToFile(markdown, page.getMarkdown(), Charset.forName("UTF-8"), Boolean.TRUE);
-			buffer.append(page.getMarkdown());
-		}
-		
-    	//File markdown = new File("out/markdown_1743615170534.md");
 		InputStreamResource inputStream = new InputStreamResource(new FileInputStream(markdown));
 		DocumentSummary documentSummary = mistralAIChatService.summary(inputStream, lang, withParagraph);
 		//DocumentSummary documentSummary = mockDocument();
+		
+		model.addAttribute("documentSummary", documentSummary);
+        return withParagraph ? "summary_with_paragraphs" : "summary";
+    }
+    
+    @PostMapping(value = "/summarize/markdown", consumes = "multipart/form-data")
+    public String summarizeMarkdown(@RequestParam("file") MultipartFile file, @RequestParam String lang, @RequestParam(defaultValue = "false", required = false) Boolean withParagraph, Model model) throws FileNotFoundException, IOException, InterruptedException {
+		InputStreamResource inputStream = new InputStreamResource(file.getInputStream());
+		DocumentSummary documentSummary = mistralAIChatService.summary(inputStream, lang, withParagraph);
 		
 		model.addAttribute("documentSummary", documentSummary);
         return withParagraph ? "summary_with_paragraphs" : "summary";

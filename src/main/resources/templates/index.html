@@ -26,20 +26,7 @@
         <h1>DocuGist</h1>
         <p class="lead">Open source solution to summarize a PDF document based on <b>Mistral AI Chat</b></p>
          <p class="lead">
-            <form th:action="@{/summarize}" method="post">
-				<div class="input-group mb-3">
-					<div class="form-check">
-						<input type="checkbox" id="withParagraph" name="withParagraph" class="form-check-input">
-						<label class="form-check-label" for="withParagraph">With paragraph</label>
-					</div>
-					<div class="input-group">
-						<label class="input-group-text" for="url">Source file</label>
-						<input type="url" name="url" id="url" class="form-control">
-						<input type="hidden" name="lang" id="lang" class="form-control" value="it"/>
-						<button class="btn btn-lg btn-secondary fw-bold text-white" type="submit">Launch</button>
-					</div>
-				</div>
-			</form>
+            <a th:href="@{/main}" class="btn btn-lg btn-success">Start</a>
         </p>
     </main>
 
