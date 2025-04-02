@@ -77,7 +77,7 @@ public class GistMistralController {
     
     @PostMapping(value = "/summarize")
     public String summarize(@RequestParam String url, @RequestParam String lang, @RequestParam(defaultValue = "false", required = false) Boolean withParagraph, Model model) throws FileNotFoundException, IOException, InterruptedException {
-    	/*MistralAIOCRRequest request = new MistralAIOCRRequest();
+    	MistralAIOCRRequest request = new MistralAIOCRRequest();
     	MistralAIOCRDocumentRequest document = new MistralAIOCRDocumentRequest();
     	document.setDocument_url(url);
 		request.setDocument(document);
@@ -89,9 +89,9 @@ public class GistMistralController {
 		for (MistralAIOCRPageResponse page : pages) {
 			FileUtils.writeStringToFile(markdown, page.getMarkdown(), Charset.forName("UTF-8"), Boolean.TRUE);
 			buffer.append(page.getMarkdown());
-		}*/
+		}
 		
-    	File markdown = new File("out/markdown_1743615170534.md");
+    	//File markdown = new File("out/markdown_1743615170534.md");
 		InputStreamResource inputStream = new InputStreamResource(new FileInputStream(markdown));
 		DocumentSummary documentSummary = mistralAIChatService.summary(inputStream, lang, withParagraph);
 		//DocumentSummary documentSummary = mockDocument();
