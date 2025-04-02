@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public abstract class DocumentSummary {
 	private String shortDescription;
-	private DocumentIndex index;
 }

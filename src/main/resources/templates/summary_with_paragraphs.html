@@ -27,19 +27,17 @@
 			
 			
 			
-			<h1 class="display-5">Document keywords</h1>
+			<h1 class="display-5">Index</h1>
 			<ol class="list-group list-group-numbered">
-				<li class="list-group-item" th:each="argument, iStat : ${documentSummary.index.arguments}"><span th:text="${argument}">Argument</span></li>
+				<li class="list-group-item" th:each="paragraph, iStat : ${documentSummary.paragraphs}"><span th:text="${paragraph.title}">Index item</span></li>
 			</ol>
 			<hr class="border border-2 opacity-75">
 			
 			<h1 class="display-5">Summary with paragraphs</h1>
 			<hr class="border border-1 opacity-75">
-			<div th:if="${documentSummary.paragraphs != null and !#lists.isEmpty(documentSummary.paragraphs)}">
 			<div th:each="paragraph, iStat : ${documentSummary.paragraphs}">
 				<h1 class="display-6" th:text="${paragraph.title}"></h1>
 				<p class"lead" th:text="${paragraph.text}"></p>
-			</div>
 			</div>
 			<hr class="border border-3 opacity-75">
 		</main>

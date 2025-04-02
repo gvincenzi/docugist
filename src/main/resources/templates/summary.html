@@ -25,14 +25,7 @@
 			<p class="lead" th:text="${documentSummary.shortDescription}" id="shortDescription"></p>
 			<hr class="border border-2 opacity-75">
 			
-			<h1 class="display-5">Document keywords</h1>
-			<ol class="list-group list-group-numbered">
-				<li class="list-group-item" th:each="argument, iStat : ${documentSummary.index.arguments}"><span th:text="${argument}">Argument</span></li>
-			</ol>
-			<hr class="border border-2 opacity-75">
-			
 			<h1 class="display-5">Summary</h1>
-			<hr class="border border-1 opacity-75">
 			<p class="lead" th:if="${documentSummary.summary}" th:text="${documentSummary.summary}" id="summary"></p>
 			<hr class="border border-3 opacity-75">
 		</main>
