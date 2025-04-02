@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="dark h-100" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>DocuGist - Welcome page</title>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles/main.css}"/>
+
+</head>
+<body class="d-flex h-100 text-center">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="mb-auto">
+		<img th:src="@{/images/leucam.jpg}" alt="Leucam Logo" style="width: 150px;">
+    </header>
+
+    <main class="px-3">
+        <h1>DocuGist</h1>
+        <p class="lead">Open source solution to summarize a PDF document based on <b>Mistral AI Chat</b></p>
+         <p class="lead">
+            <form th:action="@{/summarize}" method="post">
+				<div class="input-group mb-3">
+					<div class="form-check">
+						<input type="hidden" name="withParagraph" class="form-control" value="0"/>
+						<input type="checkbox" id="withParagraph" name="withParagraph" class="form-check-input">
+						<label class="form-check-label" for="withParagraph">With paragraph</label>
+					</div>
+					<div class="input-group">
+						<label class="input-group-text" for="url">Source file</label>
+						<input type="url" name="url" id="url" class="form-control">
+						<input type="hidden" name="lang" id="lang" class="form-control" value="it"/>
+						<button class="btn btn-lg btn-secondary fw-bold text-white" type="submit">Launch</button>
+					</div>
+				</div>
+			</form>
+        </p>
+    </main>
+
+    <footer class="mt-auto text-black-50">
+		<img th:src="@{/images/logo.jpg}" alt="GIST Logo" style="width: 30px;">
+        <p>DocuGist is a open source poject on <a href="https://github.com/gvincenzi/bibliogist" class="text-black">GitHub</a>, developed by
+         <a href="https://www.linkedin.com/in/salvatore-de-rango-780a64283/" class="text-black">Salvatore De Rango</a> and 
+         <a href="https://www.linkedin.com/in/giuseppevincenzi/?originalSubdomain=fr" class="text-black">Giuseppe Vincenzi</a></p>
+    </footer>
+</div>
+
+
+</body>
+</html>

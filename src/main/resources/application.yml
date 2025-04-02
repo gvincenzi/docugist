@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: docugist
+  ai:
+   mistralai:
+    api-key: API-KEY
