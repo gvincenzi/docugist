@@ -49,7 +49,7 @@ public class GistMistralController {
 		request.setDocument(document);
 		MistralAIOCRResponse mistralAIOCRResponse = mistralAIClient.ocr(request);
 		
-		File markdown = new File("markdown_"+System.currentTimeMillis()+".md");
+		File markdown = new File("out/markdown_"+System.currentTimeMillis()+".md");
 		List<MistralAIOCRPageResponse> pages = mistralAIOCRResponse.getPages();
 		StringBuffer buffer = new StringBuffer();
 		for (MistralAIOCRPageResponse page : pages) {
@@ -80,14 +80,14 @@ public class GistMistralController {
     }
     
     @PostMapping(value = "/summarize")
-    public String summarize(@RequestParam String url, @RequestParam String lang, @RequestParam Boolean withParagraph, Model model) throws FileNotFoundException, IOException, InterruptedException {
+    public String summarize(@RequestParam String url, @RequestParam String lang, @RequestParam(defaultValue = "false", required = false) Boolean withParagraph, Model model) throws FileNotFoundException, IOException, InterruptedException {
     	MistralAIOCRRequest request = new MistralAIOCRRequest();
     	MistralAIOCRDocumentRequest document = new MistralAIOCRDocumentRequest();
     	document.setDocument_url(url);
 		request.setDocument(document);
 		MistralAIOCRResponse mistralAIOCRResponse = mistralAIClient.ocr(request);
 		
-		File markdown = new File("markdown_"+System.currentTimeMillis()+".md");
+		File markdown = new File("out/markdown_"+System.currentTimeMillis()+".md");
 		List<MistralAIOCRPageResponse> pages = mistralAIOCRResponse.getPages();
 		StringBuffer buffer = new StringBuffer();
 		for (MistralAIOCRPageResponse page : pages) {
@@ -101,7 +101,7 @@ public class GistMistralController {
 		//DocumentSummary documentSummary = mockDocument();
 		
 		model.addAttribute("documentSummary", documentSummary);
-        return "summary";
+        return withParagraph ? "summary_with_paragraphs" : "summary";
     }
 
 	private DocumentSummaryWithParagraph mockDocument() {
