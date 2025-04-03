@@ -1,4 +1,4 @@
-package com.gist.mistral.service;
+package com.gist.docugist.service;
 
 import java.net.MalformedURLException;
 import java.util.List;
@@ -17,9 +17,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.gist.mistral.service.entity.DocumentSummary;
-import com.gist.mistral.service.entity.DocumentSummaryWithParagraph;
-import com.gist.mistral.service.entity.DocumentSummaryWithoutParagraph;
+import com.gist.docugist.service.entity.DocumentSummary;
+import com.gist.docugist.service.entity.DocumentSummaryWithParagraph;
+import com.gist.docugist.service.entity.DocumentSummaryWithoutParagraph;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

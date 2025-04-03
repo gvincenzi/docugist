@@ -1,8 +1,8 @@
-package com.gist.mistral.service.client.response;
+package com.gist.docugist.service.client.response;
 
 import java.util.List;
 
-import com.gist.mistral.service.client.request.MistralAIOCRPageResponse;
+import com.gist.docugist.service.client.request.MistralAIOCRPageResponse;
 
 import lombok.Data;
 

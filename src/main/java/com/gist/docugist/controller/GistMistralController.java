@@ -1,4 +1,4 @@
-package com.gist.mistral.controller;
+package com.gist.docugist.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gist.mistral.service.MistralAIChatService;
-import com.gist.mistral.service.client.MistralAIClient;
-import com.gist.mistral.service.client.request.MistralAIOCRDocumentRequest;
-import com.gist.mistral.service.client.request.MistralAIOCRPageResponse;
-import com.gist.mistral.service.client.request.MistralAIOCRRequest;
-import com.gist.mistral.service.client.response.MistralAIOCRResponse;
-import com.gist.mistral.service.entity.DocumentSummary;
-import com.gist.mistral.service.entity.DocumentSummaryParagraph;
-import com.gist.mistral.service.entity.DocumentSummaryWithParagraph;
+import com.gist.docugist.service.MistralAIChatService;
+import com.gist.docugist.service.client.MistralAIClient;
+import com.gist.docugist.service.client.request.MistralAIOCRDocumentRequest;
+import com.gist.docugist.service.client.request.MistralAIOCRPageResponse;
+import com.gist.docugist.service.client.request.MistralAIOCRRequest;
+import com.gist.docugist.service.client.response.MistralAIOCRResponse;
+import com.gist.docugist.service.entity.DocumentSummary;
+import com.gist.docugist.service.entity.DocumentSummaryParagraph;
+import com.gist.docugist.service.entity.DocumentSummaryWithParagraph;
 
 @Controller
 public class GistMistralController {

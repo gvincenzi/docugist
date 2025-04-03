@@ -1,4 +1,4 @@
-package com.gist.mistral.configuration;
+package com.gist.docugist.configuration;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

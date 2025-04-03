@@ -1,4 +1,4 @@
-package com.gist.mistral.configuration;
+package com.gist.docugist.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

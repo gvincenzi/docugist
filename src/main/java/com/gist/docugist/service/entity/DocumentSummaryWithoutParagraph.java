@@ -1,4 +1,4 @@
-package com.gist.mistral.service.entity;
+package com.gist.docugist.service.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

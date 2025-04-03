@@ -1,4 +1,4 @@
-package com.gist.mistral.service.client.request;
+package com.gist.docugist.service.client.request;
 
 import lombok.Data;
 

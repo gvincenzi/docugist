@@ -1,4 +1,4 @@
-package com.gist.mistral;
+package com.gist.docugist;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
