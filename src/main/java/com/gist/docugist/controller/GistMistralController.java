@@ -49,7 +49,8 @@ public class GistMistralController {
 		request.setDocument(document);
 		MistralAIOCRResponse mistralAIOCRResponse = mistralAIClient.ocr(request);
 		
-		File markdown = new File("out/markdown_"+System.currentTimeMillis()+".md");
+		String filename = url.substring(url.lastIndexOf("/"), url.lastIndexOf(".pdf"));
+		File markdown = new File("out/"+filename+".md");
 		List<MistralAIOCRPageResponse> pages = mistralAIOCRResponse.getPages();
 		StringBuffer buffer = new StringBuffer();
 		for (MistralAIOCRPageResponse page : pages) {
@@ -72,6 +73,15 @@ public class GistMistralController {
 		
 		model.addAttribute("documentSummary", documentSummary);
         return withParagraph ? "summary_with_paragraphs" : "summary";
+    }
+    
+    @PostMapping(value = "/quiz/markdown", consumes = "multipart/form-data")
+    public String quizMarkdown(@RequestParam("file") MultipartFile file, @RequestParam String lang, @RequestParam Integer numberOfQuestions, Model model) throws FileNotFoundException, IOException, InterruptedException {
+		InputStreamResource inputStream = new InputStreamResource(file.getInputStream());
+		DocumentSummary documentSummary = mistralAIChatService.quiz(inputStream, lang, numberOfQuestions);
+		
+		model.addAttribute("documentSummary", documentSummary);
+        return "quiz";
     }
 
 	@SuppressWarnings("unused")

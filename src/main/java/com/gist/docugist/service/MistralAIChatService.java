@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import com.gist.docugist.service.entity.DocumentQuiz;
 import com.gist.docugist.service.entity.DocumentSummary;
 import com.gist.docugist.service.entity.DocumentSummaryWithParagraph;
 import com.gist.docugist.service.entity.DocumentSummaryWithoutParagraph;
@@ -37,6 +38,9 @@ public class MistralAIChatService {
 	
 	@Value("classpath:/prompts/summarize.st")
 	private Resource summarize;
+	
+	@Value("classpath:/prompts/quiz.st")
+	private Resource quiz;
 	
 	public DocumentSummary summary(Resource resource, String lang, Boolean withParagraph) throws InterruptedException, MalformedURLException {
 		log.info(String.format("%s -> %s", MistralAIChatService.class.getSimpleName(), "summary"));
@@ -70,6 +74,23 @@ public class MistralAIChatService {
 		}
 		
 		return documentSummary;
+	}
+
+	public DocumentSummary quiz(Resource resource, String lang, Integer numberOfQuestions) {
+		log.info(String.format("%s -> %s", MistralAIChatService.class.getSimpleName(), "quiz"));
+		BeanOutputConverter<DocumentQuiz> beanOutputConverter = new BeanOutputConverter<>(DocumentQuiz.class);
+		String format = beanOutputConverter.getFormat();
+		
+		SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(this.quiz);
+		Message systemMessage = systemPromptTemplate.createMessage(Map.of("format", format, "language", lang, "numberOfQuestions", numberOfQuestions));
+		UserMessage userMessage = new UserMessage(resource);
+		Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
+		
+		log.info(String.format("Calling MistralAI"));
+		ChatResponse chatResponse = this.chatModel.call(prompt);
+		DocumentQuiz documentQuiz = beanOutputConverter.convert(chatResponse.getResult().getOutput().getText());
+		log.info(String.format("MistralAI FinishReason : %s", chatResponse.getResult().getMetadata().getFinishReason()));
+		return documentQuiz;
 	}
 	
 }
